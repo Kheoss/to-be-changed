@@ -1,0 +1,109 @@
+version: "3.8"
+
+services:
+  validator1:
+    image: hyperledger/besu:22.4.2
+    container_name: validator1
+    networks:
+      besu-network:
+        ipv4_address: 172.28.0.2
+    command: >
+      --data-path=/opt/besu/data
+      --genesis-file=/opt/besu/config/genesis.json
+      --network-id=1337
+      --rpc-http-enabled
+      --rpc-http-host=0.0.0.0
+      --host-allowlist=*
+      --sync-mode=FULL
+      --node-private-key-file=/opt/besu/data/key
+      --rpc-http-api=ETH,NET,WEB3,ADMIN
+      --p2p-host=172.28.0.2
+      --p2p-port=30303
+    volumes:
+      - ./networkFiles/genesis.json:/opt/besu/config/genesis.json
+      - ./networkFiles/0x3f3c2645815f59857b0f7507ccb001769f65cc54:/opt/besu/data
+    ports:
+      - "8541:8545" # RPC HTTP
+      - "30303:30303" # P2P
+
+  validator2:
+    image: hyperledger/besu:22.4.2
+    container_name: validator2
+    networks:
+      besu-network:
+        ipv4_address: 172.28.0.3
+    command: >
+      --data-path=/opt/besu/data
+      --genesis-file=/opt/besu/config/genesis.json
+      --network-id=1337
+      --rpc-http-enabled
+      --rpc-http-host=0.0.0.0
+      --host-allowlist=*
+      --sync-mode=FULL
+      --node-private-key-file=/opt/besu/data/key
+      --rpc-http-api=ETH,NET,WEB3,ADMIN
+      --p2p-host=172.28.0.3
+      --p2p-port=30303
+    volumes:
+      - ./networkFiles/genesis.json:/opt/besu/config/genesis.json
+      - ./networkFiles/0x4eb2d1160dd181d354c4065f128c2218feb19fa2:/opt/besu/data
+    ports:
+      - "8542:8545"
+      - "30304:30303"
+
+  validator3:
+    image: hyperledger/besu:22.4.2
+    container_name: validator3
+    networks:
+      besu-network:
+        ipv4_address: 172.28.0.4
+    command: >
+      --data-path=/opt/besu/data
+      --genesis-file=/opt/besu/config/genesis.json
+      --network-id=1337
+      --rpc-http-enabled
+      --rpc-http-host=0.0.0.0
+      --host-allowlist=*
+      --sync-mode=FULL
+      --node-private-key-file=/opt/besu/data/key
+      --rpc-http-api=ETH,NET,WEB3,ADMIN
+      --p2p-host=172.28.0.4
+      --p2p-port=30303
+    volumes:
+      - ./networkFiles/genesis.json:/opt/besu/config/genesis.json
+      - ./networkFiles/0x87401b92fce9cf00015e4cf38d6db05f6003088c:/opt/besu/data
+    ports:
+      - "8543:8545"
+      - "30305:30303"
+
+  validator4:
+    image: hyperledger/besu:22.4.2
+    container_name: validator4
+    networks:
+      besu-network:
+        ipv4_address: 172.28.0.5
+    command: >
+      --data-path=/opt/besu/data
+      --genesis-file=/opt/besu/config/genesis.json
+      --network-id=1337
+      --rpc-http-enabled
+      --rpc-http-host=0.0.0.0
+      --host-allowlist=*
+      --sync-mode=FULL
+      --node-private-key-file=/opt/besu/data/key
+      --rpc-http-api=ETH,NET,WEB3,ADMIN
+      --p2p-host=172.28.0.5
+      --p2p-port=30303
+    volumes:
+      - ./networkFiles/genesis.json:/opt/besu/config/genesis.json
+      - ./networkFiles/0xdd47bca95d975b0f4e3a8f577c37cf5c872d0d39:/opt/besu/data
+    ports:
+      - "8544:8545"
+      - "30306:30303"
+
+networks:
+  besu-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16

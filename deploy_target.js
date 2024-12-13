@@ -2,7 +2,6 @@ const { Web3 } = require("web3");
 const fs = require("fs");
 const path = require("path");
 
-// Initialize Web3 instance connected to validator1's RPC endpoint
 const web3 = new Web3("http://localhost:8541");
 
 // Read the compiled contract's ABI and bytecode

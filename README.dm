@@ -36,6 +36,8 @@ Methodology:
 - Create a target contract. [See TargetContract.sol]
 - Use Validator 1 RPC endpoint (8541) to deploy the compiled target contract and retreive the contact address [See deploy_target.js].
 - Create a mallicious contract to call a target contract and manipulate gas cost. [See MalliciousContract.sol]
+ 
 
-- 
+Cleanup (preserving private keys):
+- ./cleanup.sh 
 

@@ -30,6 +30,8 @@ Validator 4 (0xdd47bca95d975b0f4e3a8f577c37cf5c872d0d39):
 - PK: 0x405ee93e6f513bc76c999a720dd353146dbec576fc45e445039b6e7d1f2fbd96
 
 
+Sprint 1:
+
 Methodology:
 
 - Fund validators
@@ -41,3 +43,12 @@ Methodology:
 Cleanup (preserving private keys):
 - ./cleanup.sh 
 
+
+
+
+Sprint 2:
+
+Methodology:
+
+- Add logstash, filebeat, elasticsearch and kibana to the network
+- Refine log inputs using filebeat

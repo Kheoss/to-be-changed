@@ -101,6 +101,68 @@ services:
       - "8544:8545"
       - "30306:30303"
 
+  ##############################
+  #      ELASTICSEARCH        #
+  ##############################
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
+    container_name: es
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    networks:
+      - besu-network
+    ports:
+      - "9200:9200"
+
+  ##############################
+  #         LOGSTASH          #
+  ##############################
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.6.2
+    container_name: logstash
+    depends_on:
+      - elasticsearch
+    networks:
+      - besu-network
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+    ports:
+      - "5044:5044" # Beats input
+      - "9600:9600" # Monitoring API (optional)
+
+  ##############################
+  #          KIBANA           #
+  ##############################
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.6.2
+    container_name: kibana
+    depends_on:
+      - elasticsearch
+    networks:
+      - besu-network
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+
+  ##############################
+  #         FILEBEAT          #
+  ##############################
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.6.2
+    container_name: filebeat
+    depends_on:
+      - logstash
+    networks:
+      - besu-network
+    user: root
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Mount Docker socket
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+
 networks:
   besu-network:
     driver: bridge
